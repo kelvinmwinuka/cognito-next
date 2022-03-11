@@ -5,7 +5,8 @@ export default function useValidationSchema(){
     registerSchema: yup.object().shape({
       username: yup.string().required('Please enter a username.'),
       email: yup.string().email().required('Please enter an email address.'),
-      password: yup.string().required('Please create a password.'),
+      password: yup.string().required('Please create a password.')
+      .min(8, 'Password needs to be at least 8 characters long.'),
       confirm_password: yup.string().required('Please confirm your password.')
       .oneOf([yup.ref('password')], 'Passwords do not match')
     }),
