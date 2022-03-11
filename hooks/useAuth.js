@@ -4,6 +4,9 @@ export default function useAuth(){
   const login = (values, { setSubmitting }) => {
     fetch('/api/login', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(values)
     }).then(res => {
       if (!res.ok) throw res
