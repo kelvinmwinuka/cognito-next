@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "aws-sdk": "^2.1104.0",
     "formik": "^2.2.9",
     "next": "12.1.0",
     "react": "17.0.2",
