@@ -28,7 +28,8 @@ export default function Register() {
 				validationSchema={registerSchema}
 				onSubmit={register}
 				validateOnMount={false}
-				validateOnChange={false}>
+				validateOnChange={false}
+				validateOnBlur={false}>
 				{({
 					isSubmitting,
 					errors,

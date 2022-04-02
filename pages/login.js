@@ -7,17 +7,30 @@ import AuthLinkText from "../components/AuthLinkText";
 import SubmitButton from "../components/SubmitButton";
 import useAuth from "../hooks/useAuth";
 import useValidationSchema from "../hooks/useValidationSchema";
-import Link from "next/link"
+import { useRouter } from "next/router";
 
 export default function Login() {
 
-  const { loginSchema } = useValidationSchema()
-  const { login } = useAuth()
+  const router = useRouter();
+  const { success } = router.query;
+
+  const { loginSchema } = useValidationSchema();
+  const { login } = useAuth();
 
   return (
     <div style={{
       padding: "10px"
     }}>
+      {
+        success === "true" &&
+        <div style={{
+          paddingTop: "10px",
+          paddingBottom: "10px",
+          color: "green"
+        }}>
+          {'You\'re signed up!'}
+        </div>
+      }
       <Formik
         initialValues={{
           username: "",
@@ -26,7 +39,8 @@ export default function Login() {
         validationSchema={loginSchema}
         onSubmit={login}
         validateOnMount={false}
-        validateOnChange={false}>
+        validateOnChange={false}
+        validateOnBlur={false}>
         {({
           isSubmitting,
           errors,
@@ -61,12 +75,12 @@ export default function Login() {
               <InputHelperText isError>{errors?.password}</InputHelperText>
             </InputLayout>
             <InputLayout>
-              <AuthLinkText href="/register">Don't have an account? Register.</AuthLinkText>
+              <AuthLinkText href="/register">{'Don\'t have an account? Register.'}</AuthLinkText>
             </InputLayout>
             <SubmitButton isSubmitting={isSubmitting} />
           </form>
         )}
       </Formik>
     </div>
-  )
+  );
 }

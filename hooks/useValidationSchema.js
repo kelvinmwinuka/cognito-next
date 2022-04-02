@@ -14,6 +14,11 @@ export default function useValidationSchema(){
     loginSchema: yup.object().shape({
       username: yup.string().required('Username is required.'),
       password: yup.string().required('Password is required.')
+    }),
+
+    confirmSchema: yup.object().shape({
+      username: yup.string().required('Username is required.'),
+      code: yup.string().required('Confirmation code is required.')
     })
   }
 }

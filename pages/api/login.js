@@ -1,7 +1,33 @@
+import CognitoIdentityServiceProvider from "aws-sdk/clients/cognitoidentityserviceprovider";
 
-export default function handler(req, res) {
+const { COGNITO_REGION, COGNITO_APP_CLIENT_ID } = process.env
+
+export default async function handler(req, res) {
 	if (!['POST'].includes(req.method)) {
 		return res.status(400).json({ message: 'Method not allowed' })
 	}
-	res.status(200).json({ name: 'John Doe' })
+
+	const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider({
+		region: COGNITO_REGION
+	})
+
+	const params = {
+		AuthFlow: 'USER_PASSWORD_AUTH',
+		ClientId: COGNITO_APP_CLIENT_ID,
+		AuthParameters: {
+			USERNAME: req.body.username,
+			PASSWORD: req.body.password
+		}
+	}
+
+	try {
+		const result = await cognitoIdentityServiceProvider.initiateAuth(params).promise()
+		return res.status(200).json({
+			...result.AuthenticationResult
+		})
+	} catch(err) {
+		console.log(err)
+		const message = err.toString()
+		return res.status(err.statusCode).json({ message })
+	}
 }

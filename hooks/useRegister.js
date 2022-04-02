@@ -1,5 +1,8 @@
+import { useRouter } from 'next/router'
 
 export default function useRegister() {
+
+	const router = useRouter()
 
 	const register = (values, { setSubmitting }) => {
 		fetch('/api/register', {
@@ -10,8 +13,10 @@ export default function useRegister() {
 			body: JSON.stringify(values)
 		}).then(res => {
 			if (!res.ok) throw res
-		}).then(data => {
-			console.log(data)
+			router.push({
+				pathname: '/confirm',
+				query: { username: values?.username }
+			})
 		}).catch(err => {
 			console.error(err)
 		}).finally(() => {
@@ -19,7 +24,7 @@ export default function useRegister() {
 		})
 	}
 
-	const confirm = (values, setSubmitting) => {
+	const confirm = (values, { setSubmitting }) => {
 		fetch('/api/confirm', {
 			method: 'POST',
 			headers: {
@@ -28,8 +33,10 @@ export default function useRegister() {
 			body: JSON.stringify(values)
 		}).then(res => {
 			if (!res.ok) throw res
-		}).then(data => {
-			console.log(data)
+			router.push({
+				pathname: '/login',
+				query: { confirmed: true }
+			})
 		}).catch(err => {
 			console.error(err)
 		}).finally(() => {
