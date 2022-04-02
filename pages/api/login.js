@@ -3,9 +3,7 @@ import CognitoIdentityServiceProvider from "aws-sdk/clients/cognitoidentityservi
 const { COGNITO_REGION, COGNITO_APP_CLIENT_ID } = process.env
 
 export default async function handler(req, res) {
-	if (!['POST'].includes(req.method)) {
-		return res.status(400).json({ message: 'Method not allowed' })
-	}
+	if (req.method !== 'POST') return res.status(405).send()
 
 	const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider({
 		region: COGNITO_REGION
