@@ -75,6 +75,9 @@ export default function Login() {
               <InputHelperText isError>{errors?.password}</InputHelperText>
             </InputLayout>
             <InputLayout>
+              <AuthLinkText href="/password/reset_code">{'Forgot password?'}</AuthLinkText>
+            </InputLayout>
+            <InputLayout>
               <AuthLinkText href="/register">{'Don\'t have an account? Register.'}</AuthLinkText>
             </InputLayout>
             <SubmitButton isSubmitting={isSubmitting} />
