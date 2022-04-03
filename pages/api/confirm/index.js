@@ -1,4 +1,3 @@
-import CognitoIdentityServiceProvider from "aws-sdk/clients/cognitoidentityserviceprovider";
 import {
 	CognitoIdentityProviderClient,
 	ConfirmSignUpCommand
