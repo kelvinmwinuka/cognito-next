@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.58.0",
-    "aws-sdk": "^2.1106.0",
     "formik": "^2.2.9",
     "next": "12.1.0",
     "react": "17.0.2",
