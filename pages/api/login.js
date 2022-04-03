@@ -1,4 +1,3 @@
-import CognitoIdentityServiceProvider from "aws-sdk/clients/cognitoidentityserviceprovider";
 import { CognitoIdentityProviderClient, InitiateAuthCommand } from "@aws-sdk/client-cognito-identity-provider"
 
 const { COGNITO_REGION, COGNITO_APP_CLIENT_ID } = process.env
