@@ -16,7 +16,8 @@ export default function useRegister() {
 			router.push({
 				pathname: '/confirm',
 				query: { username: values?.username }
-			})
+			},
+				"/confirm")
 		}).catch(err => {
 			console.error(err)
 		}).finally(() => {
@@ -36,7 +37,8 @@ export default function useRegister() {
 			router.push({
 				pathname: '/login',
 				query: { confirmed: true }
-			})
+			},
+				"/login")
 		}).catch(err => {
 			console.error(err)
 		}).finally(() => {

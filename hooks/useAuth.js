@@ -26,10 +26,12 @@ export default function useAuth(){
           },
           body: JSON.stringify({ username: values.username })
         })
-        await router.push({
-          pathname: "/confirm",
-          query: {username: values.username}
-        })
+        await router.push(
+      {
+            pathname: "/confirm",
+            query: {username: values.username},
+          },
+          "/confirm")
       }
     }).finally(() => {
       setSubmitting(false)
@@ -48,7 +50,8 @@ export default function useAuth(){
       router.push({
         pathname: '/password/reset',
         query: { username: values.username }
-      })
+      },
+        "/password/reset")
     }).catch(err => {
       console.error(err)
     }).finally(() => {
@@ -68,7 +71,8 @@ export default function useAuth(){
       router.push({
         pathname: '/login',
         query: { reset: true }
-      })
+      },
+        "/login")
     }).catch(err => {
       console.error(err)
     }).finally(() => {
