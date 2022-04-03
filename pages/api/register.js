@@ -1,13 +1,9 @@
-import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider'
+import { CognitoIdentityProviderClient, SignUpCommand } from '@aws-sdk/client-cognito-identity-provider'
 
 const { COGNITO_REGION, COGNITO_APP_CLIENT_ID } = process.env
 
 export default async function handler(req, res) {
 	if (req.method !== 'POST') return res.status(405).send()
-
-	const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider({
-		region: COGNITO_REGION
-	})
 
 	const params = {
 		ClientId: COGNITO_APP_CLIENT_ID,
@@ -21,11 +17,16 @@ export default async function handler(req, res) {
 		]
 	}
 
+	const cognitoClient = new CognitoIdentityProviderClient({
+		region: COGNITO_REGION
+	})
+	const signUpCommand = new SignUpCommand(params)
+
 	try {
-		await cognitoIdentityServiceProvider.signUp(params).promise()
-		return res.status(200).send()
+		const response = await cognitoClient.send(signUpCommand)
+		return res.status(response['$metadata'].httpStatusCode).send()
 	} catch (err) {
 		console.log(err)
-		return res.status(err.statusCode).json({ message: err.toString() })
+		return res.status(err['$metadata'].httpStatusCode).json({ message: err.toString() })
 	}
 }

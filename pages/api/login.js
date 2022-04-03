@@ -1,13 +1,10 @@
 import CognitoIdentityServiceProvider from "aws-sdk/clients/cognitoidentityserviceprovider";
+import { CognitoIdentityProviderClient, InitiateAuthCommand } from "@aws-sdk/client-cognito-identity-provider"
 
 const { COGNITO_REGION, COGNITO_APP_CLIENT_ID } = process.env
 
 export default async function handler(req, res) {
 	if (req.method !== 'POST') return res.status(405).send()
-
-	const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider({
-		region: COGNITO_REGION
-	})
 
 	const params = {
 		AuthFlow: 'USER_PASSWORD_AUTH',
@@ -18,14 +15,18 @@ export default async function handler(req, res) {
 		}
 	}
 
+	const cognitoClient = new CognitoIdentityProviderClient({
+		region: COGNITO_REGION
+	})
+	const initiateAuthCommand = new InitiateAuthCommand(params)
+
 	try {
-		const result = await cognitoIdentityServiceProvider.initiateAuth(params).promise()
-		return res.status(200).json({
-			...result.AuthenticationResult
+		const response = await cognitoClient.send(initiateAuthCommand)
+		return res.status(response['$metadata'].httpStatusCode).json({
+			...response.AuthenticationResult
 		})
 	} catch(err) {
 		console.log(err)
-		const message = err.toString()
-		return res.status(err.statusCode).json({ message })
+		return res.status(err['$metadata'].httpStatusCode).json({ message: err.toString() })
 	}
 }
