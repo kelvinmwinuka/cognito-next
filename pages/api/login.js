@@ -21,6 +21,7 @@ export default async function handler(req, res) {
 
 	try {
 		const response = await cognitoClient.send(initiateAuthCommand)
+		console.log(response)
 		return res.status(response['$metadata'].httpStatusCode).json({
 			...response.AuthenticationResult
 		})
