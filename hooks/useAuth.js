@@ -26,8 +26,7 @@ export default function useAuth(){
           },
           body: JSON.stringify({ username: values.username })
         })
-        await router.push(
-      {
+        await router.push({
             pathname: "/confirm",
             query: {username: values.username},
           },
