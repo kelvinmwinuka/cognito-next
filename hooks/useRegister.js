@@ -46,8 +46,18 @@ export default function useRegister() {
 		})
 	}
 
+	const googleRegisterSuccess = (googleResponse) => {
+		console.log(googleResponse)
+	}
+
+	const googleRegisterFailure = (googleResponse) => {
+		console.error(googleResponse)
+	}
+
 	return {
 		register,
-		confirm
+		confirm,
+		googleRegisterSuccess,
+		googleRegisterFailure
 	}
 }

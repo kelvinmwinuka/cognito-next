@@ -7,12 +7,16 @@ import AuthLinkText from "../components/AuthLinkText";
 import SubmitButton from "../components/SubmitButton";
 import useValidationSchema from "../hooks/useValidationSchema";
 import useRegister from '../hooks/useRegister'
-import Link from "next/link";
+import GoogleLogin from "react-google-login";
 
 export default function Register() {
 
 	const { registerSchema } = useValidationSchema()
-	const { register } = useRegister()
+	const { 
+		register,
+		googleRegisterSuccess,
+		googleRegisterFailure 
+	} = useRegister()
 
 	return (
 		<div style={{
@@ -89,6 +93,14 @@ export default function Register() {
 						</InputLayout>
 						<InputLayout>
 							<AuthLinkText href="/login">Already have an account? Log in</AuthLinkText>
+						</InputLayout>
+						<InputLayout>
+							<GoogleLogin
+								clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+								buttonText="Login with Google"
+								onSuccess={googleRegisterSuccess}
+								onFailure={googleRegisterFailure}
+							/>
 						</InputLayout>
 						<SubmitButton isSubmitting={isSubmitting} />
 					</form>
