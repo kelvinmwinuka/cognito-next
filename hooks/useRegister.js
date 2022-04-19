@@ -47,7 +47,20 @@ export default function useRegister() {
 	}
 
 	const googleRegisterSuccess = (googleResponse) => {
-		console.log(googleResponse)
+		fetch('/api/register/google', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ id_token: googleResponse?.tokenId })
+		}).then(res => {
+			if (!res.ok) throw res
+			router.push({
+				pathname: '/login'
+			})
+		}).catch(err => {
+			console.error(err)
+		})
 	}
 
 	const googleRegisterFailure = (googleResponse) => {

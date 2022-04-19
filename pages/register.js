@@ -97,7 +97,7 @@ export default function Register() {
 						<InputLayout>
 							<GoogleLogin
 								clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
-								buttonText="Login with Google"
+								buttonText="Register with Google"
 								onSuccess={googleRegisterSuccess}
 								onFailure={googleRegisterFailure}
 							/>

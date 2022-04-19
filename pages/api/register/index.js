@@ -13,6 +13,10 @@ export default async function handler(req, res) {
 			{
 				Name: 'email',
 				Value: req.body.email
+			},
+			{
+				Name: 'custom:RegistrationMethod',
+				Value: 'username_password'
 			}
 		]
 	}
