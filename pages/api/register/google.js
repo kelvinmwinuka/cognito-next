@@ -1,23 +1,17 @@
 import { CognitoIdentityProviderClient, SignUpCommand } from '@aws-sdk/client-cognito-identity-provider'
 import { OAuth2Client } from 'google-auth-library'
-import { promisify } from 'util'
-import bcrypt from 'bcrypt'
-
-const genSalt = promisify(bcrypt.genSalt)
-const hash = promisify(bcrypt.hash)
 
 const {
   COGNITO_REGION,
   COGNITO_APP_CLIENT_ID,
+  GOOGLE_TOKEN_ISSUER,
   NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-  SALT_ROUNDS
 } = process.env
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).send()
 
   let googlePayload
-  let password
 
   try {
     // Verify the id token from google
@@ -27,11 +21,12 @@ export default async function handler(req, res) {
       audience: NEXT_PUBLIC_GOOGLE_CLIENT_ID
     })
     googlePayload = ticket.getPayload()
-    console.log(googlePayload)
-
-    // Generate password from a hash of googlePaylaod['sub']
-    const salt = await genSalt(Number(SALT_ROUNDS))
-    password = await hash(googlePayload['sub'], salt)
+    if (
+      !googlePayload?.iss === GOOGLE_TOKEN_ISSUER ||
+      !googlePayload?.aud === NEXT_PUBLIC_GOOGLE_CLIENT_ID
+    ) {
+      throw new Error("Token issuer or audience invalid.")
+    }
   } catch (err) {
     return res.status(422).json({ message: err.toString() })
   }
@@ -40,8 +35,8 @@ export default async function handler(req, res) {
   try {
     const params = {
       ClientId: COGNITO_APP_CLIENT_ID,
-      Password: password, // Hash of googlePaylaod['sub']
       Username: googlePayload.email.split("@")[0], // Username extracted from email address
+      Password: googlePayload.sub,
       UserAttributes: [
         {
           Name: 'email',

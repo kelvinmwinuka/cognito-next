@@ -13,6 +13,7 @@ export default function useAuth(){
       body: JSON.stringify(values)
     }).then(res => {
       if (!res.ok) throw res
+      return res.json()
     }).then(data => {
       console.log(data)
     }).catch(async err => {
@@ -79,9 +80,32 @@ export default function useAuth(){
     })
   }
 
+  const googleSignInSuccess = (googleResponse) => {
+    fetch('/api/login/google', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id_token: googleResponse?.tokenId })
+    }).then(res => {
+      if (!res.ok) throw res
+      return res.json()
+    }).then(data => {
+      console.log(data)
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const googleSignInFailure = (googleResponse) => {
+    console.error(googleResponse)
+  }
+
   return {
     login,
     resetPasswordRequest,
-    resetPassword
+    resetPassword,
+    googleSignInSuccess,
+    googleSignInFailure
   }
 }
