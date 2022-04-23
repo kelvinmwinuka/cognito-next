@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.58.0",
-    "bcrypt": "^5.0.1",
     "formik": "^2.2.9",
     "google-auth-library": "^7.14.1",
     "next": "12.1.0",
