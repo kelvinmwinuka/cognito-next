@@ -47,6 +47,7 @@ export default function useRegister() {
 	}
 
 	const googleRegisterSuccess = (googleResponse) => {
+		console.log(googleResponse)
 		fetch('/api/register/google', {
 			method: 'POST',
 			headers: {

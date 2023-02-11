@@ -85,6 +85,7 @@ export default function Login() {
               <GoogleLogin 
 								clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
 								buttonText="Login with Google"
+                responseType={'id_token'}
 								onSuccess={googleSignInSuccess}
 								onFailure={googleSignInFailure}
               />
